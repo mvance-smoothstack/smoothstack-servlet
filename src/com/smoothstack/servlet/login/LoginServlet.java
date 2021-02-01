@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author max
  *
  */
-//the below annotation must match a specified url-pattern in web.xml
-@WebServlet("/Login")
+
+@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	//default value
 	private static final long serialVersionUID = 1L;
@@ -28,10 +28,26 @@ public class LoginServlet extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		out.print("<html><head></head><body><h1>Hello world</h1></body></html>");
+		out.print("<html><head></head><body><h1>Login page</h1><br><p>Login: username foo, password bar<form action=\"LoginServlet\" method=\"POST\"><input type=\"text\" name=\"username\" placeholder=\"username\"><br><input type=\"password\" name=\"password\" placeholder=\"password\"><button>Submit</button></form></body></html>");
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html");
+		String printMsg = "<html><head></head><body>";
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		//TODO: A real login page wouldn't use hardcoded values, nor would it save the password in plaintext.
+		if (username.equals("foo") && password.equals("bar")) {
+			printMsg = printMsg + "<h1>Login successful</h1>";
+		} else {
+			printMsg = printMsg + "<h1>Login failed</h1>";
+		}
+		printMsg = printMsg + "</body></html>";
+		PrintWriter out = response.getWriter();
+		out.print(printMsg);
 	}
 
 }
